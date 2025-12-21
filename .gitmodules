@@ -1,0 +1,3 @@
+[submodule "workspace/smart-home"]
+	path = workspace/smart-home
+	url = https://github.com/NotZahar/smart-home.git
