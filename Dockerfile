@@ -14,5 +14,7 @@ RUN /root/docker-scripts/2-install-apt-deps.sh
 RUN /root/docker-scripts/3-setup-locale.sh
 RUN /root/docker-scripts/4-setup-zsh.sh
 
+RUN echo "source ~/.config/envman/PATH.env" >> ~/.zshrc
+
 ENV SHELL=/bin/zsh
 CMD ["/bin/zsh"]
