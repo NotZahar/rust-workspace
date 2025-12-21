@@ -1,0 +1,15 @@
+services:
+  rust-workspace:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    pull_policy: missing
+    image: rust-workspace-image:latest
+    container_name: rust-workspace-container
+    ipc: host
+    network_mode: host
+    privileged: true
+    volumes:
+      - ./workspace:/root/workspace
+    tty: true
+    stdin_open: true
