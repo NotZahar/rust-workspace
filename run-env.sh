@@ -25,10 +25,17 @@ if already_in_container; then
 else
 	if is_container_running; then
 		echo "Attaching to $CONTAINER_NAME"
-		docker exec -it $CONTAINER_NAME /bin/zsh
+		docker exec -it $CONTAINER_NAME /bin/bash
 	else
-		echo "Building $IMAGE_NAME and attaching to $CONTAINER_NAME"
-		docker compose up -d --build --force-recreate $SERVICE_NAME
-		docker exec -it $CONTAINER_NAME /bin/zsh
+		if [[ -z "$(docker images -q $IMAGE_NAME 2>/dev/null)" ]]; then
+			echo "Image $IMAGE_NAME not found. Building..."
+			COMPOSE_FLAGS="--build --force-recreate"
+		else
+			echo "Image $IMAGE_NAME found. Starting container..."
+			COMPOSE_FLAGS="--force-recreate"
+		fi
+
+		KERNEL_VERSION=$(uname -r) docker compose up -d $COMPOSE_FLAGS $SERVICE_NAME
+		docker exec -it $CONTAINER_NAME /bin/bash
 	fi
 fi
