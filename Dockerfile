@@ -15,6 +15,4 @@ RUN /root/docker-scripts/1-switch-apt-mirror.sh
 RUN /root/docker-scripts/2-install-deps.sh
 RUN /root/docker-scripts/3-setup-zsh.sh
 
-RUN echo "source ~/.config/envman/PATH.env" >> ~/.zshrc
-
 CMD ["/bin/zsh"]
