@@ -2,7 +2,6 @@ services:
   rust-workspace:
     build:
       context: .
-      dockerfile: Dockerfile
     pull_policy: missing
     image: rust-workspace-image:latest
     container_name: rust-workspace-container
