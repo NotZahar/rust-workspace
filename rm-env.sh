@@ -1,8 +1,10 @@
 #!/bin/bash
 
+set -euo pipefail
+
 IMAGE_NAME="rust-workspace-image"
 CONTAINER_NAME="rust-workspace-container"
 
-docker stop "$CONTAINER_NAME"
-docker rm "$CONTAINER_NAME"
-docker rmi "$IMAGE_NAME"
+podman stop "$CONTAINER_NAME" 2>/dev/null || true
+podman rm "$CONTAINER_NAME" 2>/dev/null || true
+podman rmi "$IMAGE_NAME" 2>/dev/null || true

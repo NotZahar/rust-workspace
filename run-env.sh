@@ -1,13 +1,13 @@
 #!/bin/bash
 
-set -eu
+set -euo pipefail
 
 SERVICE_NAME="rust-workspace"
 IMAGE_NAME="rust-workspace-image"
 CONTAINER_NAME="rust-workspace-container"
 
 already_in_container() {
-	if [ -f /.dockerenv ]; then
+	if [ -f /.dockerenv ] || [ -f /run/.containerenv ]; then
 		return 0
 	fi
 
@@ -15,9 +15,7 @@ already_in_container() {
 }
 
 is_container_running() {
-	docker ps --filter "name=$CONTAINER_NAME" --filter "status=running" | grep $CONTAINER_NAME >/dev/null
-
-	return $?
+	podman ps --filter "name=$CONTAINER_NAME" --filter "status=running" | grep -q $CONTAINER_NAME
 }
 
 if already_in_container; then
@@ -25,17 +23,17 @@ if already_in_container; then
 else
 	if is_container_running; then
 		echo "Attaching to $CONTAINER_NAME"
-		docker exec -it $CONTAINER_NAME /bin/bash
+		podman exec -it $CONTAINER_NAME /bin/zsh
 	else
-		if [[ -z "$(docker images -q $IMAGE_NAME 2>/dev/null)" ]]; then
+		if [[ -z "$(podman images -q $IMAGE_NAME 2>/dev/null)" ]]; then
 			echo "Image $IMAGE_NAME not found. Building..."
-			COMPOSE_FLAGS="--build --force-recreate"
+			COMPOSE_FLAGS="--build"
 		else
 			echo "Image $IMAGE_NAME found. Starting container..."
-			COMPOSE_FLAGS="--force-recreate"
+			COMPOSE_FLAGS=""
 		fi
 
-		KERNEL_VERSION=$(uname -r) docker compose up -d $COMPOSE_FLAGS $SERVICE_NAME
-		docker exec -it $CONTAINER_NAME /bin/bash
+		KERNEL_VERSION=$(uname -r) podman-compose --in-pod false up -d $COMPOSE_FLAGS $SERVICE_NAME
+		podman exec -it $CONTAINER_NAME /bin/zsh
 	fi
 fi
