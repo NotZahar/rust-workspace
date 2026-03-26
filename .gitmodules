@@ -1,3 +1,6 @@
 [submodule "workspace/smart-home"]
 	path = workspace/smart-home
 	url = git@github.com:NotZahar/smart-home.git
+[submodule "workspace/smart-home-dynamic"]
+	path = workspace/smart-home-dynamic
+	url = git@github.com:NotZahar/smart-home-dynamic.git
