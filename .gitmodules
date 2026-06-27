@@ -7,3 +7,6 @@
 [submodule "workspace/smart-home-network"]
 	path = workspace/smart-home-network
 	url = git@github.com:NotZahar/smart-home-network.git
+[submodule "workspace/smart-home-patterns"]
+	path = workspace/smart-home-patterns
+	url = git@github.com:NotZahar/smart-home-patterns.git
